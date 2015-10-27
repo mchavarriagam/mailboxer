@@ -1,10 +1,7 @@
-You have a new reply: <%= @subject %>
-===============================================
-
-You have received a new reply:
+<%= @subject %>
 
 -----------------------------------------------
 <%= @message.body.html_safe? ? @message.body : strip_tags(@message.body) %>
 -----------------------------------------------
 
-Visit <%= root_url %> and go to your inbox for more info.
+You have elected to receive these notifications. You can opt out by visiting <%= root_url %>, clicking on your profile, and updating your preferences. 
