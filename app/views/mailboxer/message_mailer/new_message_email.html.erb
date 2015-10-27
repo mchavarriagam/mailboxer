@@ -4,10 +4,7 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
   </head>
   <body>
-    <h1>You have a new message: <%= @subject %></h1>
-    <p>
-      You have received a new message:
-    </p>
+    <h2><%= @subject %></h2>
     <blockquote>
       <p>
         <%= raw @message.body %>
@@ -16,5 +13,6 @@
     <p>
       Visit <%= link_to root_url, root_url %> and go to your inbox for more info.
     </p>
+    <p>You have elected to receive these messages. You can opt out by going to your profile and updating your preferences.</p>
   </body>
 </html>
