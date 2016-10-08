@@ -20,11 +20,9 @@ Gem::Specification.new do |s|
 
   # Gem dependencies
   #
-  # SQL foreign keys
-  s.add_runtime_dependency('foreigner', '>= 0.9.1')
 
   # Development Gem dependencies
-  s.add_runtime_dependency('rails', '>= 3.2.0')
+  s.add_runtime_dependency('rails', '>= 4.2.0')
   s.add_runtime_dependency('carrierwave', '>= 0.5.8')
 
   if RUBY_ENGINE == "rbx" && RUBY_VERSION >= "2.1.0"
@@ -37,13 +35,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec-its', '~> 1.1'
   s.add_development_dependency 'rspec-collection_matchers', '~> 1.1'
   s.add_development_dependency('appraisal', '~> 1.0.0')
-  s.add_development_dependency('shoulda-matchers')
-  # Fixtures
-  #if RUBY_VERSION >= '1.9.2'
-   # s.add_development_dependency('factory_girl', '>= 3.0.0')
-  #else
-    #s.add_development_dependency('factory_girl', '~> 2.6.0')
-  #end
+  s.add_development_dependency('shoulda-matchers', '~> 2')
   s.add_development_dependency('factory_girl', '~> 2.6.0')
   # Population
   s.add_development_dependency('forgery', '>= 0.3.6')

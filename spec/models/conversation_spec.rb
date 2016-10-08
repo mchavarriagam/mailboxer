@@ -13,7 +13,7 @@ describe Mailboxer::Conversation do
   let!(:conversation) { message1.conversation }
 
   it { should validate_presence_of :subject }
-  it { should ensure_length_of(:subject).is_at_most(Mailboxer.subject_max_length) }
+  it { should validate_length_of(:subject).is_at_most(Mailboxer.subject_max_length) }
 
   it "should have proper original message" do
     expect(conversation.original_message).to eq message1
@@ -117,6 +117,17 @@ describe Mailboxer::Conversation do
 
         expect(Mailboxer::Conversation.unread(participant)).to eq [unread_conversation]
       end
+    end
+
+    describe ".between" do
+      it "finds conversations where two participants participate" do
+        expect(Mailboxer::Conversation.between(entity1, participant)).to eq [sentbox_conversation, inbox_conversation]
+      end
+
+      it "does not find conversations if the participants have not interacted yet" do
+        expect(Mailboxer::Conversation.between(participant, entity2)).to eq []
+      end
+
     end
   end
 

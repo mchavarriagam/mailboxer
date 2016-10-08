@@ -2,7 +2,7 @@ class Mailboxer::Message < Mailboxer::Notification
   attr_accessible :attachment if Mailboxer.protected_attributes?
   self.table_name = :mailboxer_notifications
 
-  belongs_to :conversation, :class_name => "Mailboxer::Conversation", :validate => true, :autosave => true
+  belongs_to :conversation, :validate => true, :autosave => true
   validates_presence_of :sender
 
   class_attribute :on_deliver_callback
@@ -11,7 +11,7 @@ class Mailboxer::Message < Mailboxer::Notification
     where(:conversation_id => conversation.id)
   }
 
-  mount_uploader :attachment, AttachmentUploader
+  mount_uploader :attachment, Mailboxer::AttachmentUploader
 
   class << self
     #Sets the on deliver callback method.
@@ -26,16 +26,17 @@ class Mailboxer::Message < Mailboxer::Notification
     self.clean if should_clean
 
     #Receiver receipts
-    temp_receipts = recipients.map { |r| build_receipt(r, 'inbox') }
+    receiver_receipts = recipients.map do |r|
+      receipts.build(receiver: r, mailbox_type: 'inbox', is_read: false)
+    end
 
     #Sender receipt
-    sender_receipt = build_receipt(sender, 'sentbox', true)
+    sender_receipt =
+      receipts.build(receiver: sender, mailbox_type: 'sentbox', is_read: true)
 
-    temp_receipts << sender_receipt
-
-    if temp_receipts.all?(&:valid?)
-      temp_receipts.each(&:save!)
-      Mailboxer::MailDispatcher.new(self, recipients).call
+    if valid?
+      save!
+      Mailboxer::MailDispatcher.new(self, receiver_receipts).call
 
       conversation.touch if reply
 
